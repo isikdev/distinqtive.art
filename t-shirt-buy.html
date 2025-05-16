@@ -1,0 +1,1550 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Описание">
+        <title>В собственность</title>
+        <script src="https://api-maps.yandex.ru/2.1?lang=ru_RU"
+            type="text/javascript"></script>
+        <link rel="stylesheet" href="/css/style.css">
+        <style>
+        /* Подключаем локальный шрифт Maragsâ */
+         @font-face {
+    font-family: 'Maragsâ';
+    src: url('Distinqtive_Simple.ttf') format('truetype');
+    font-weight: normal;
+    font-style: none;
+}
+@font-face {
+        font-family: 'Eng_Distinqtive';
+        src: url('Eng_Distinqtive.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+        body {
+            font-family: 'Maragsâ', sans-serif;
+            background-color: #ccc;
+            color: #ccc;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #e63a4f;
+            color: #fff;
+            padding: 20px 0;
+            width: 100%;
+            height: 80px;
+            position: relative;
+            z-index: 10;
+            font-family: 'Eng_Distinqtive', sans-serif; /* Шрифт только в header */
+
+        }
+
+        header h1 {
+            font-size: 36px;
+        }
+
+        .header-title {
+            font-size: 28px; /* Размер шрифта */
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            flex-grow: 1; /* Это свойство заставит блок растягиваться, заполняя пространство между элементами */
+        }
+
+        header .menu-button {
+            position: absolute;
+            right: 20px;
+            background-color: #ffffff00;
+            color: #98303c00;
+            top: 50%;
+            transform: translateY(-50%); /* Сдвигаем на половину высоты кнопки */
+
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 0px;
+        }
+
+        header .menu-button {
+            transition: transform 0.15s ease-out;
+        }
+
+        header .menu-button:active {
+            transform: translateY(-50%) scale(0.85); /* Чуть сильнее сжимается */
+        }
+
+        header .menu-button:hover {
+            background-color: #d43f3a00;
+            color: #fff;
+        }
+
+        .icon-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .icon-button img {
+            position: absolute;
+            left: 20px;
+
+            width: 40px; /* Укажите нужный размер иконки */
+            height: 40px; /* Укажите нужный размер иконки */
+        }
+
+        .sidebar {
+            width: 100%;
+            background-color: #ffffffff;
+            color: #aa1717;
+            position: absolute;
+            top: 80px;
+            left: 0;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            z-index: 9;
+            text-align: left;
+
+        }
+
+        .sidebar.open {
+            transform: translateY(0);
+        }
+
+        .sidebar a {
+
+            color: #e63a4f;
+            background-color: #ffffff;
+            font-size: 20px;
+            position: relative;
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 1s, transform 0.1s;
+            text-decoration: none;
+            line-height: 50px;
+            padding-left: 25px;
+
+
+        }
+
+        .sidebar a:hover::after {
+            opacity: 1;
+        }
+
+        .sidebar a:hover {
+            background-color: #cb9492;
+
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgb(0, 0, 0);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            z-index: 8;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .main-content {
+            width: 100%;
+        }
+
+        .product {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        /* Стили для слайдера */
+        .slider {
+            position: relative;
+            max-width: 100%;
+            width: 500px;
+            margin: 0 auto;
+            display: flex;
+            overflow: hidden;
+        }
+
+
+        .sidebar a:hover::after {
+            opacity: 1; /* Показываем линию при наведении */
+        }
+
+        .sidebar a:hover {
+            background-color: #c8302b;
+        }
+
+        .sidebar a::after {
+            content: "";
+            display: inline-block;
+            width: 20px; /* Размер иконки */
+            height: 20px;
+            background-image: url("https://i.ibb.co/8g71SDJ9/line353.png");
+            background-size: contain;
+            background-repeat: no-repeat;
+            position: absolute;
+            right: 15px; /* Отступ от правого края */
+            top: 50%;
+            transform: translateY(-50%);
+            opacity: 0; /* Изначально скрыто */
+            transition: opacity 0.3s ease, right 0.3s ease;
+        }
+
+        .sidebar a:hover::after {
+            opacity: 1; /* Показываем иконку при наведении */
+            right: 10px; /* Сдвиг вправо */
+        }
+
+        .slider button.active {
+            display: flex;
+        }
+
+        .next {
+            right: 10px;
+        }
+
+        .next img {
+            content: url('https://i.ibb.co/s5VqLL6/right-arrow.png'); /* Стандартное изображение */
+            width: 40px;
+            height: 40px;
+            transition: opacity 0.3s ease-in-out;
+        }
+
+        .prev {
+            left: 10px;
+        }
+
+
+        .next img, .prev img {
+            transition: transform 0.15s ease-out;
+        }
+
+        .next:active img, .prev:active img {
+            transform: scale(0.85); /* Чуть сильнее сжимается для естественности */
+        }
+
+        .size-selector input {
+            display: none; /* Скрываем сами radio-кнопки */
+        }
+
+        .size-selector {
+            position: relative;
+            display: flex;
+            justify-content: space-around;
+            margin-bottom: 0px; /* Добавим немного пространства снизу */
+            user-select: none; /* Запрещаем выделение на уровне контейнера */
+
+        }
+
+        .size-button {
+            position: relative;
+            display: inline-block;
+            width: 80px;
+            height: 80px;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        .divider-container1 {
+            position: relative; /* Для позиционирования наклонной линии */
+            width: 90%; /* Ширина контейнера */
+            margin: 20px auto; /* Центрирование и отступы */
+        }
+
+        .divider1 {
+            width: 100%; /* Ширина основной линии */
+            height: 2px; /* Высота основной линии */
+            background-color: #ccc; /* Цвет основной линии */
+            border: none;
+            margin: 0; /* Убираем дополнительные отступы */
+        }
+
+        .angled-line1 {
+            position: absolute; /* Позиционируем относительно родительского контейнера */
+            right: 0; /* Сдвигаем вправо */
+            top: 0; /* На одном уровне с основной линией */
+            width: 20px; /* Длина наклонной линии */
+            height: 2px;
+            margin-top: 2px; /* Толщина наклонной линии */
+            background-color: #ccc; /* Цвет наклонной линии */
+            transform: rotate(135deg); /* Поворот на 45 градусов */
+            transform-origin: top right; /* Начало поворота с правого верхнего угла */
+        }
+
+        .angled-line10 {
+            position: absolute; /* Позиционируем относительно родительского контейнера */
+            left: 1.2; /* Сдвигаем вправо */
+            top: -1; /* На одном уровне с основной линией */
+            width: 10px; /* Длина наклонной линии */
+            height: 2px;
+            margin-top: 2.5px; /* Толщина наклонной линии */
+            background-color: #ccc; /* Цвет наклонной линии */
+            transform: rotate(135deg); /* Поворот на 45 градусов */
+            transform-origin: top left; /* Начало поворота с правого верхнего угла */
+        }
+
+        @font-face {
+            font-family: 'Maragsâ';
+            src: url('fonts/Distinqtive_Simple.ttf') format('truetype');
+            font-weight: normal;
+            font-style: none;
+        }
+
+        @font-face {
+            font-family: 'Eng_Distinqtive';
+            src: url('fonts/Eng_Distinqtive.ttf') format('truetype');
+            font-weight: normal;
+            font-style: normal;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Maragsâ', sans-serif;
+            background-color: #fafafa;
+            color: #e63a4f;
+            line-height: 1.6;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background-color: #e63a4f;
+            color: #fff;
+            padding: 20px 0;
+            width: 100%;
+            height: 80px;
+            position: relative;
+            z-index: 10;
+            font-family: 'Eng_Distinqtive', sans-serif; /* Шрифт только в header */
+
+        }
+
+        header h1 {
+            font-size: 36px;
+        }
+
+        .header-title {
+            font-size: 28px; /* Размер шрифта */
+            font-weight: bold;
+            color: #fff;
+            text-align: center;
+            flex-grow: 1; /* Это свойство заставит блок растягиваться, заполняя пространство между элементами */
+        }
+
+        header .menu-button {
+            position: absolute;
+            right: 20px;
+            background-color: #ffffff00;
+            color: #98303c00;
+            top: 50%;
+            transform: translateY(-50%); /* Сдвигаем на половину высоты кнопки */
+
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 0px;
+        }
+
+        header .menu-button:hover {
+            background-color: #d43f3a00;
+            color: #fff;
+        }
+
+        .icon-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+        }
+
+        .icon-button img {
+            position: absolute;
+            left: 20px;
+
+            width: 40px; /* Укажите нужный размер иконки */
+            height: 40px; /* Укажите нужный размер иконки */
+        }
+
+        .sidebar {
+            width: 100%;
+            background-color: #ffffff;
+            color: #b70d0d;
+            position: absolute;
+            top: 80px;
+            left: 0;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            z-index: 9;
+            text-align: left;
+
+        }
+
+        .sidebar.open {
+            transform: translateY(0);
+        }
+
+        .sidebar a {
+
+            color: #e63a4f; /* Цвет текста */
+            background-color: #ffffff;
+            font-size: 20px;
+            position: relative; /* Чтобы позиционировать псевдоэлемент относительно пункта */
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: opacity 1s, transform 0.1s;
+            text-decoration: none; /* Убираем подчеркивание */
+            line-height: 50px; /* Увеличиваем высоту строки */
+            padding-left: 25px;
+
+
+        }
+
+        .sidebar a.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+
+        .sidebar a:hover {
+            background-color: #c6353000;
+
+        }
+
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            z-index: 8;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+
+        .product {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+
+        .slider-images {
+            display: flex;
+            transition: transform 0.5s ease-in-out;
+        }
+
+        .slider-images img {
+            width: 100%;
+            border-radius: 0px;
+        }
+
+        .slider button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: #fff;
+            border: none;
+            width: 40px;
+            height: 40px;
+            font-size: 18px;
+            cursor: pointer;
+            border-radius: 50%;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .slider button img {
+            width: 30px;
+            height: 30px;
+            display: block;
+            margin: 0;
+        }
+
+        .slider button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background-color: transparent; /* Убираем фон */
+            border: none;
+            width: 40px; /* Размер кнопки */
+            height: 40px; /* Размер кнопки */
+            color: rgba(0, 0, 0, 0.8);
+            font-size: 18px;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .slider button:hover {
+            background-color: rgba(0, 0, 0, 0.8);
+            color: #fff;
+        }
+
+        .slider button:hover {
+            background-color: rgba(0, 0, 0, 0);
+            color: #fff;
+        }
+
+        @media (max-width: 768px) {
+            .product {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+
+        .gender-title {
+            font-size: 18px;
+            color: #fff;
+            background-color: #e53a4e;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-bottom: 15px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        .gender-title:hover {
+            background-color: #d43f3a;
+            color: #fff;
+        }
+
+        .gender-title:active {
+            background-color: #c63430;
+        }
+
+        .size-button {
+            font-size: 40px; /* базовый размер шрифта */
+            color: #ccc; /* серый цвет по умолчанию */
+            transition: font-size 0.2s, color 0.2s; /* плавное изменение размера и цвета */
+            user-select: none;
+        }
+
+        .size-button:hover {
+            font-size: 50px; /* увеличение размера шрифта при наведении */
+        }
+
+        .size-button.active {
+            color: #e53a4e; /* оранжевый цвет для активной кнопки */
+        }
+        
+        .size-button.highlight {
+            animation: pulse 1.5s infinite;
+            color: #e53a4e;
+        }
+        
+        @keyframes pulse {
+            0% { opacity: 0.5; }
+            50% { opacity: 1; }
+            100% { opacity: 0.5; }
+        }
+
+        .buy-button {
+            background-color: #e53a4e;
+            color: white;
+            font-size: 18px;
+            padding: 15px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .buy-button:hover {
+            background-color: #d43f3a;
+        }
+
+        .buy-button:active {
+            background-color: #c63430;
+        }
+
+        .btn-container {
+            align-items: center;
+            align-content: center;
+            display: flex; /* Устанавливаем горизонтальное расположение кнопок */
+            gap: 0px; /* Расстояние между кнопками */
+            margin-top: 0px;
+            margin-bottom: 30px;
+            margin-right: 0px;
+            justify-content: center;
+        }
+
+        .btn-wrapper-1 {
+            text-align: center;
+            position: relative; /* Для размещения псевдоэлементов */
+        }
+
+        .btn-wrapper-2 {
+            text-align: center;
+            position: relative; /* Для размещения псевдоэлементов */
+            margin-left: 0px;
+        }
+
+        .line-top-1 {
+            width: 120%; /* Линия по ширине кнопки */
+            height: 2px; /* Толщина линии */
+            background-color: #e10b4400; /* Цвет линии */
+            margin: 10px 0; /* Отступ сверху и снизу */
+            position: relative; /* Для псевдоэлементов */
+            margin-bottom: 1px;
+
+        }
+
+        .line-top-2 {
+            width: 120%; /* Линия по ширине кнопки */
+            height: 2px; /* Толщина линии */
+            background-color: #e10b44; /* Цвет линии */
+            margin: 10px 0; /* Отступ сверху и снизу */
+            position: relative; /* Для псевдоэлементов */
+            margin-bottom: 1px;
+
+        }
+
+        .line-bottom-1 {
+            width: 120%; /* Линия по ширине кнопки */
+            height: 2px; /* Толщина линии */
+            background-color: #e10b4400; /* Цвет линии */
+            margin: 10px 0; /* Отступ сверху и снизу */
+            position: relative; /* Для псевдоэлементов */
+            margin-left: -25px;
+            margin-top: 2px;
+        }
+
+        .line-bottom-2 {
+            width: 120%; /* Линия по ширине кнопки */
+            height: 2px; /* Толщина линии */
+            background-color: #e10b44; /* Цвет линии */
+            margin: 10px 0; /* Отступ сверху и снизу */
+            position: relative; /* Для псевдоэлементов */
+            margin-left: -25px;
+            margin-top: 2px;
+        }
+
+        .line-top-1::after {
+            content: "";
+            position: absolute;
+            left: -59px; /* Расположение линии по горизонтали (слева от верхней линии) */
+            top: 24px; /* Расположение линии по вертикали */
+            width: 70px; /* Длина наклонной линии */
+            height: 2px; /* Толщина наклонной линии */
+            background-color: #e10b4400; /* Цвет наклонной линии */
+            transform: rotate(135deg); /* Угол наклона */
+            transform-origin: center; /* Точка вращения */
+        }
+
+        .line-top-2::after {
+            content: "";
+            position: absolute;
+            left: -59px; /* Расположение линии по горизонтали (слева от верхней линии) */
+            top: 24px; /* Расположение линии по вертикали */
+            width: 70px; /* Длина наклонной линии */
+            height: 2px; /* Толщина наклонной линии */
+            background-color: #e10b44; /* Цвет наклонной линии */
+            transform: rotate(135deg); /* Угол наклона */
+            transform-origin: center; /* Точка вращения */
+        }
+
+        .line-bottom-1::after {
+            content: "";
+            position: absolute;
+            right: -59px; /* Расположение линии по горизонтали (справа от нижней линии) */
+            bottom: 24px; /* Расположение линии по вертикали */
+            width: 70px; /* Длина наклонной линии */
+            height: 2px; /* Толщина наклонной линии */
+            background-color: #e10b4400; /* Цвет наклонной линии */
+            transform: rotate(-45deg); /* Угол наклона в противоположную сторону */
+            transform-origin: center; /* Точка вращения */
+        }
+
+        .line-bottom-2::after {
+            content: "";
+            position: absolute;
+            right: -59px; /* Расположение линии по горизонтали (справа от нижней линии) */
+            bottom: 24px; /* Расположение линии по вертикали */
+            width: 70px; /* Длина наклонной линии */
+            height: 2px; /* Толщина наклонной линии */
+            background-color: #e10b44; /* Цвет наклонной линии */
+            transform: rotate(-45deg); /* Угол наклона в противоположную сторону */
+            transform-origin: center; /* Точка вращения */
+        }
+
+        .btn-text-1 {
+            background: none;
+            border: none;
+            color: #e10b44;
+            font-size: 18px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-top: 7px;
+            padding: 0;
+            font-family: 'Maragsâ';
+            margin-right: -5px
+        }
+
+
+        .btn-text-2 {
+            background: none;
+            border: none;
+            color: rgb(132, 132, 132);
+            font-size: 14px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-top: 7px;
+            padding: 0;
+            font-family: 'Maragsâ';
+            margin-right: -5px;
+
+        }
+
+        .btn-text-1:hover {
+            color: #e10b44; /* Изменение цвета при наведении */
+        }
+
+        .btn-text-2:hover {
+            color: #e10b44; /* Изменение цвета при наведении */
+        }
+
+        .divider-container1 {
+            position: relative; /* Для позиционирования наклонной линии */
+            width: calc(100% - 60px); /* Учитываем отступы слева и справа */
+            margin: 0 auto; /* Центрирование */
+            padding: 0 0px; /* Отступы слева и справа */
+            box-sizing: border-box; /* Чтобы ширина учитывала padding */
+        }
+
+        .divider1 {
+            width: 100%; /* Заполняем контейнер */
+            height: 2px;
+            background-color: #ccc;
+            border: none;
+            margin: 0;
+        }
+
+        .angled-line1 {
+            position: absolute;
+            right: 0;
+            top: 0;
+            width: 20px;
+            height: 2px;
+            background-color: #ccc;
+            transform: rotate(135deg);
+            transform-origin: top right;
+        }
+
+        .angled-line10 {
+            position: absolute;
+            left: 1.8px; /* Теперь линия слева */
+            top: -1.3px;
+            width: 10px;
+            height: 2px;
+            background-color: #ccc;
+            transform: rotate(135deg);
+            transform-origin: top left;
+        }
+
+        .divider-container2 {
+            position: relative; /* Для позиционирования наклонной линии */
+            width: 90%; /* Ширина контейнера */
+            margin: 20px auto; /* Центрирование и отступы */
+        }
+
+        .divider2 {
+            width: 100%; /* Ширина основной линии */
+            height: 2px; /* Высота основной линии */
+            background-color: #ccc; /* Цвет основной линии */
+            border: none;
+            margin: 0; /* Убираем дополнительные отступы */
+        }
+
+        .angled-line2 {
+            position: absolute; /* Позиционируем относительно родительского контейнера */
+            right: 0; /* Сдвигаем вправо */
+            top: 0; /* На одном уровне с основной линией */
+            width: 20px; /* Длина наклонной линии */
+            height: 2px;
+            margin-top: 2px; /* Толщина наклонной линии */
+            background-color: #ccc; /* Цвет наклонной линии */
+            transform: rotate(135deg); /* Поворот на 45 градусов */
+            transform-origin: top right; /* Начало поворота с правого верхнего угла */
+        }
+
+        .angled-line20 {
+            position: absolute; /* Позиционируем относительно родительского контейнера */
+            margin-left: -8px; /* Сдвигаем вправо */
+            width: 10px; /* Длина наклонной линии */
+            height: 2px;
+            margin-top: 1.5px; /* Толщина наклонной линии */
+            background-color: #ccc; /* Цвет наклонной линии */
+            transform: rotate(135deg); /* Поворот на 45 градусов */
+        }
+
+        .divider-container3 {
+            position: relative; /* Для позиционирования наклонной линии */
+            width: 90%; /* Ширина контейнера */
+            margin: 20px auto; /* Центрирование и отступы */
+        }
+
+        .divider3 {
+            width: 100%; /* Ширина основной линии */
+            height: 2px; /* Высота основной линии */
+            background-color: #ccc; /* Цвет основной линии */
+            border: none;
+            margin: 0; /* Убираем дополнительные отступы */
+        }
+
+        .angled-line3 {
+            position: absolute; /* Позиционируем относительно родительского контейнера */
+            right: 0; /* Сдвигаем вправо */
+            top: 0; /* На одном уровне с основной линией */
+            width: 20px; /* Длина наклонной линии */
+            height: 2px;
+            margin-top: 2px; /* Толщина наклонной линии */
+            background-color: #ccc; /* Цвет наклонной линии */
+            transform: rotate(135deg); /* Поворот на 45 градусов */
+            transform-origin: top right; /* Начало поворота с правого верхнего угла */
+        }
+
+        .angled-line30 {
+            position: absolute; /* Позиционируем относительно родительского контейнера */
+            margin-left: -8px; /* Сдвигаем вправо */
+            width: 10px; /* Длина наклонной линии */
+            height: 2px;
+            margin-top: 1.5px; /* Толщина наклонной линии */
+            background-color: #ccc; /* Цвет наклонной линии */
+            transform: rotate(135deg); /* Поворот на 45 градусов */
+        }
+
+        .Текст {
+            margin-top: 0px;
+            margin-bottom: 9px;
+            font-size: 20px;
+            display: flex;
+            justify-content: flex-start; /* Выравнивание элементов по левому краю */
+            align-items: center;
+            margin: 0;
+            padding-left: 20px; /* Отступ слева */
+            padding-right: 20px; /* Отступ справа */
+        }
+
+        .Текст3 {
+            top: 90px;
+            margin-bottom: 90px;
+            font-size: 20px;
+            display: flex;
+            justify-content: flex-start; /* Выравнивание элементов по левому краю */
+            align-items: center;
+            margin: 0;
+            padding-left: 20px; /* Отступ слева */
+            padding-right: 20px; /* Отступ справа */
+        }
+
+
+        .Текст p {
+            margin: 0;
+            text-align: left; /* Выравнивание текста по левому краю */
+            flex-grow: 1; /* Текст занимает оставшееся пространство */
+            margin-top: 30px;
+            margin-bottom: 30px;
+        }
+
+        .Текст img {
+            width: 20px;
+            height: auto;
+            position: absolute; /* Позиционируем кнопку */
+            right: 30px; /* Располагаем справа */
+            margin-top: -8px;
+
+        }
+
+        .description {
+            margin-top: 10px;
+            font-size: 16px;
+            color: #555;
+            max-width: 400px;
+
+        }
+
+        .toggle-description {
+            position: absolute;
+            right: 30px; /* Прижимаем кнопку к правому краю */
+            transform: translateY(-50%); /* Корректируем центрирование */
+        }
+
+        .triangle-button {
+            width: 20px;
+            height: 20px;
+            margin-bottom: -10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .triangle-button::before,
+        .triangle-button::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 2px;
+            background-color: #cccccc;
+            transform-origin: center;
+        }
+
+        .triangle-button::before {
+            transform: rotate(135deg);
+            top: 8px;
+        }
+
+        .triangle-button::after {
+            transform: rotate(-135deg);
+            top: 8px;
+            left: 12px;
+        }
+
+        .triangle-button.open::before {
+            transform: rotate(-135deg);
+            top: 8px;
+
+
+        }
+
+        .triangle-button.open::after {
+            transform: rotate(135deg);
+            top: 8px;
+
+            left: 12px;
+        }
+
+        .description1 {
+            margin-top: 0px;
+            font-size: 16px;
+            color: #555;
+            max-width: 400px;
+
+        }
+
+        .toggle-description1 {
+            position: absolute;
+            right: 30px; /* Прижимаем кнопку к правому краю */
+            transform: translateY(-50%); /* Корректируем центрирование */
+        }
+
+        .triangle-button1 {
+            width: 20px;
+            height: 20px;
+            margin-bottom: -10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+
+        .triangle-button1::before,
+        .triangle-button1::after {
+            content: "";
+            position: absolute;
+            width: 16px;
+            height: 2px;
+            background-color: #cccccc;
+            transform-origin: center;
+        }
+
+        .triangle-button1::before {
+            transform: rotate(135deg);
+            top: 8px;
+        }
+
+        .triangle-button1::after {
+            transform: rotate(-135deg);
+            top: 8px;
+            left: 12px;
+        }
+
+        .triangle-button1.open::before {
+            transform: rotate(-135deg);
+            top: 8px;
+
+
+        }
+
+        .triangle-button1.open::after {
+            transform: rotate(135deg);
+            top: 8px;
+
+            left: 12px;
+        }
+
+        .Текст3 {
+            margin-top: 30px;
+        }
+
+        .название-футболки {
+            margin-top: 30px;
+            font-size: 25px;
+            margin-bottom: 30px;
+        }
+
+        .цена {
+            margin-top: 30px;
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+.input-container {
+    position: relative;
+    display: flex;
+    align-items: center; /* Выравниваем по центру вертикально */
+  width: calc(100% - 20px); /* Общая ширина уменьшается на 100px */
+   padding: 0 0px; /* Убираем по 50px с каждой стороны */
+    box-sizing: border-box; /* Чтобы padding не увеличивал размер */
+        margin: 0 auto; /* Центрируем контейнер */
+
+    }
+    
+.line.top {
+    position: absolute;
+    top: 0px;
+    left: 10px;
+    width: 100%;
+    height: 2px;
+    background: #ccc;
+}
+
+.input-container input {
+    width: 100%;
+    padding: 8px;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    font-size: 14px;
+    outline: none;
+    background: transparent;
+    color: #000;
+    position: relative;
+    top: 0px;
+
+
+}
+
+.line {
+    position: absolute;
+    width: 70px;
+    height: 2px;
+    background: #ccc;
+    top: 13px;
+}
+
+.line.left {
+    left: -49px;
+    transform: rotate(-45deg);
+    top: 25px;
+}
+
+.line.right {
+    right: -59px;
+    top: 8px;
+    transform: rotate(-45deg);
+}
+
+    </style>
+        <header>
+            <a href="#" class="icon-button">
+
+                <img src="https://i.ibb.co/80yN5s7/jhg-2.png" alt="jhg-2">
+            </a>
+
+            <div class="header-title">DISTINCTIVE</div>
+            <button class="menu-button" onclick="toggleMenu()">
+                <img src="https://i.ibb.co/WpJrm8B/Menu-button.png" alt="Menu"
+                    style="width: 25px; height: 25px;">
+            </button>
+        </header>
+
+        <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+        <div class="sidebar" id="sidebar">
+            <a href="main_page.html">ГЛАВНАЯ</a>
+            <a href="index.html">ФУТБОЛКА FIRE INSIDE</a>
+            <a href="story.html">ИСТОРИЯ ФУТБОЛКИ</a>
+
+        </div>
+        <div class="main-content">
+            <section class="product">
+                <div class="slider">
+                    <div class="slider-images">
+                        <img src="https://i.ibb.co/d0yr5CPQ/IMG-2947-2.jpg"
+                            alt="IMG-2947-2" border="0">
+                        <img src="https://i.ibb.co/wNf1YwFf/IMG-3044.jpg"
+                            alt="IMG-3040" border="0">
+                        <img src="https://i.ibb.co/HLdkQKfm/IMG-3107-1.jpg"
+                            alt="IMG-3107-1" border="0">
+                        <img src="https://i.ibb.co/HL6wBHMq/IMG-3057.jpg"
+                            alt="IMG-3057" border="0">
+                        <img src="https://i.ibb.co/hGWMBvg/IMG-3015.jpg"
+                            alt="IMG-3015" border="0">
+                        <img src="https://i.ibb.co/ccpRm1Xg/IMG-3063.jpg"
+                            alt="IMG-3063" border="0">
+                        <img src="https://i.ibb.co/wNq5m7JD/IMG-3075.jpg"
+                            alt="IMG-3075" border="0">
+                    </div>
+
+                    <button class="prev" onclick="moveSlide(-1)">
+                        <img src="https://i.ibb.co/kHVMX5T/left-arrow.png"
+                            alt="prev" style="width: 30px; height: 30px;">
+                    </button>
+                    <button class="next" onclick="moveSlide(1)">
+                        <img src="https://i.ibb.co/s5VqLL6/right-arrow.png"
+                            alt="next" style="width: 30px; height: 30px;">
+                    </button>
+
+                </div>
+
+                <div class="название-футболки">ФУТБОЛКА FIRE INSIDE</div>
+                <div class="divider-container1">
+                    <div class="angled-line1"></div>
+                    <hr class="divider1">
+                    <div class="angled-line10"></div>
+                </div>
+
+                <div class="btn-container"
+                    style="margin-top: 30px; margin-bottom: 30px;">
+                    <div class="btn-wrapper-2">
+                        <div class="line-top-2"></div>
+                        <a href="index.html" class="btn-text-2">ИСТОРИЯ
+                            ФУТБОЛКИ</a>
+                        <div class="line-bottom-2"></div>
+                    </div>
+                </div>
+
+                <div class="divider-container1">
+                    <div class="angled-line1"></div>
+                    <hr class="divider1">
+                    <div class="angled-line10"></div>
+                </div>
+
+                <div class="Текст">
+                    <p>ТКАНЬ</p>
+                    <div class="toggle-description">
+                        <div class="triangle-button"></div>
+                    </div>
+                </div>
+                <div class="description" style="display: none;">
+                    <div class="Ткань2"
+                        style="text-align: left; margin-bottom: 15px; margin-left: 10px; font-size: 14px;">
+                        СОСТАВ: ХЛОПОК 95%, ЭЛАСТАН 5%.
+                    </div>
+                    <div class="Ткань2"
+                        style="text-align: left; margin-bottom: 15px;font-size: 14px;margin-left: 10px;">
+                        ПЛОТНОСТЬ: 230 Г/М² - НА 27 % ПЛОТНЕЕ СТАНДАРТНОЙ
+                        ФУТБОЛКИ.
+                    </div>
+                    <img src="https://i.ibb.co/bx3d73x/IMG-2992.jpg"
+                        alt="IMG-2992" border="0" width="380">
+
+                    <div class="Ткань2"
+                        style="text-align: left;  margin-bottom: 30px;font-size: 10px;margin-left: 10px;">
+                        *ВНЕШНИЙ ВИД ТОВАРА МОЖЕТ ОТЛИЧАТЬСЯ ОТ КАРТИНКИ
+                    </div>
+                </div>
+
+                <div class="divider-container1">
+                    <div class="angled-line1"></div>
+                    <hr class="divider1">
+                    <div class="angled-line10"></div>
+                </div>
+
+                <div class="Текст">
+                    <p>КОМПЛЕКТАЦИЯ</p>
+                    <div class="toggle-description1">
+                        <div class="triangle-button1"></div>
+                    </div>
+                </div>
+                <div class="description1" style="display: none;">
+                    <img src="https://i.ibb.co/XrLnXHDV/IMG-3218.jpg"
+                        alt="IMG-3218" border="0"
+                        style="width: 380px; height: auto;">
+                    <div
+                        style="text-align: left; font-size: 14px; margin-left: 0px; margin-bottom: 30px; margin-top: 10px;">
+                        - ФУТБОЛКА<br>
+                        - ТУБУС (КОРОБКА)<br>
+                        - 2 НАКЛЕЙКИ С ЛОГОТИПОМ DISTINQTIVE<br>
+                        - ИНСТРУКЦИЯ
+                    </div>
+                </div>
+
+                <div class="divider-container1">
+                    <div class="angled-line1"></div>
+                    <hr class="divider1">
+                    <div class="angled-line10"></div>
+                </div>
+
+                <div class="Текст3">ВЫБЕРИТЕ РАЗМЕР:</div>
+
+                <div class="size-selector">
+                    <label for="size-s">
+                        <span class="size-button">S</span>
+                    </label>
+                    <label for="size-m">
+                        <span class="size-button">M</span>
+                    </label>
+                    <label for="size-l">
+                        <span class="size-button">L</span>
+                    </label>
+                </div>
+
+                <div class="divider-container1">
+                    <div class="angled-line1"></div>
+                    <hr class="divider1">
+                    <div class="angled-line10"></div>
+                </div>
+
+                <div class="Текст3"
+                    style="margin-top: 30px; margin-bottom: 10px;">ДОСТАВКА</div>
+
+                <div
+                    style="display: inline-flex; border-radius: 8px; overflow: hidden; box-shadow: 0 2px 4px rgba(0,0,0,0.1);">
+                    <a href="#"
+                        style="display: inline-flex; align-items: center; padding: 8px 12px; background-color: #e53a4e; color: white; font-weight: bold; text-decoration: none; gap: 6px; border: none; cursor: pointer; font-size: 14px;">
+                        Заказать через СДЭК
+                    </a>
+
+                    <div style="width: 1px; background-color: #e0e0e0;"></div>
+
+                    <a href="https://ozon.ru/t/nkh3Qb4"
+                        style="display: inline-flex; align-items: center; padding: 8px 12px; background-color: #f0f0f0; color: #666; text-decoration: none; gap: 6px; border: none; cursor: pointer; font-size: 14px;">
+                        Заказать на Ozon
+                    </a>
+                </div>
+
+                <div id="loader" style="display: none;"><div
+                        class="loader-circle"></div><span
+                        class="loader_text"></span></div>
+                <div id="modal">
+                    <div class="modal-content">
+                        <span id="close">&times;</span>
+                        <div id="map" style="width: 100%; height: 100%;"></div>
+                    </div>
+                </div>
+
+                <div id="orderForm">
+                    <form action="https://purchase.distinqtive.art/payment/form"
+                        method="POST" id="sdekOrderForm">
+                        <label for="recipientName"
+                            style="display: block; margin-top: 15px; font-size: 16px;">ФИО
+                            ПОЛУЧАТЕЛЯ:</label>
+                        <div class="input-container">
+                            <div class="line top"></div>
+                            <input type="text" id="recipientName" name="name"
+                                required style="font-size: 16px;">
+                            <div class="line left"></div>
+                            <div class="line right"></div>
+                        </div>
+
+                        <label for="recipientPhone"
+                            style="display: block; margin-top: 15px; font-size: 16px;">ТЕЛЕФОН
+                            ПОЛУЧАТЕЛЯ:</label>
+                        <div class="input-container">
+                            <div class="line top"></div>
+                            <input type="text" id="recipientPhone" name="phone"
+                                maxlength="11" placeholder="7 (ХХХ) ХХХ-ХХ-ХХ"
+                                data-mask="7 (000) 000-00-00" required>
+                            <div class="line left"></div>
+                            <div class="line right"></div>
+                        </div>
+
+                        <label for="recipientEmail"
+                            style="display: block; margin-top: 15px; font-size: 16px;">ПОЧТА:</label>
+                        <div class="input-container">
+                            <div class="line top"></div>
+                            <input type="text" id="recipientEmail" name="email"
+                                required>
+                            <div class="line left"></div>
+                            <div class="line right"></div>
+                        </div>
+
+                        <div class="btn-container" style="margin-top: 30px;">
+                            <div class="btn-wrapper-2">
+                                <div class="line-top-2"></div>
+                                <button id="openModal" class="btn-text-2"
+                                    style="margin-right: 5px;">КАРТА
+                                    ПВЗ</button>
+                                <div class="line-bottom-2"></div>
+                            </div>
+                        </div>
+
+                        <textarea name="notes" hidden></textarea>
+
+                        <div id="pvzNameBlock" style="display: none;">
+                            <label for="pvzName"
+                                style="display: block; margin-top: 15px; font-size: 16px;">НАЗВАНИЕ
+                                ПВЗ:</label>
+                            <div class="input-container">
+                                <div class="line top"></div>
+                                <input type="text" id="pvzName" name="pvzName"
+                                    readonly required>
+                                <div class="line left"></div>
+                                <div class="line right"></div>
+                            </div>
+                        </div>
+
+                        <div id="pvzAddressBlock" style="display: none;">
+                            <label for="pvzAddress"
+                                style="display: block; margin-top: 15px; font-size: 16px;">АДРЕС
+                                ПВЗ:</label>
+                            <div class="input-container">
+                                <div class="line top"></div>
+                                <input type="text" id="pvzAddress"
+                                    name="pvzAddress" readonly required>
+                                <div class="line left"></div>
+                                <div class="line right"></div>
+                            </div>
+                        </div>
+
+                        <input type="text" id="deliveryPoint" hidden
+                            name="deliveryPoint" readonly>
+                        <input type="text" id="pvzPrice" hidden name="pvzPrice"
+                            readonly>
+
+                        <input type="hidden" name="product_id" value="21">
+
+                        <div class="цена" style="margin-top: 10px;">1990
+                            РУБЛЕЙ</div>
+
+                        <div class="btn-container">
+                            <div class="btn-wrapper-2">
+                                <div class="line-top-2"></div>
+                                <button type="button" id="buyButton"
+                                    class="btn-text-2">В СОБСТВЕННОСТЬ</button>
+                                <div class="line-bottom-2"></div>
+                            </div>
+                        </div>
+
+                        <div id="orderSizeAlert"
+                            style="color: white; font-size: 16px; display: none; margin-top: 15px; margin-bottom: 15px; padding: 10px; text-align: center; font-weight: bold; background-color: #e53a4e; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                            ⚠️ ПОЖАЛУЙСТА, ВЫБЕРИТЕ РАЗМЕР ФУТБОЛКИ ⚠️
+                        </div>
+
+                        <div id="validationErrors"
+                            style="color: white; font-size: 16px; display: none; margin-top: 15px; margin-bottom: 15px; padding: 10px; text-align: center; font-weight: bold; background-color: #e53a4e; border-radius: 5px; box-shadow: 0 2px 5px rgba(0,0,0,0.2);">
+                        </div>
+
+                        <div id="nameError" class="field-error"
+                            style="color: #e53a4e; font-size: 14px; display: none; margin-top: 5px; margin-bottom: 10px;">⚠️
+                            Введите ФИО получателя</div>
+                        <div id="phoneError" class="field-error"
+                            style="color: #e53a4e; font-size: 14px; display: none; margin-top: 5px; margin-bottom: 10px;">⚠️
+                            Введите телефон получателя</div>
+                        <div id="emailError" class="field-error"
+                            style="color: #e53a4e; font-size: 14px; display: none; margin-top: 5px; margin-bottom: 10px;">⚠️
+                            Введите почту</div>
+                        <div id="pvzError" class="field-error"
+                            style="color: #e53a4e; font-size: 14px; display: none; margin-top: 5px; margin-bottom: 10px;">⚠️
+                            Выберите ПВЗ на карте</div>
+                    </form>
+                </div>
+            </section>
+
+        </div>
+
+        <div class="consent-box">
+            <label for="consent-checkbox" class="consent-label"
+                style="font-size: 12px; margin-left: 20px; margin-right: 20px">
+                Нажимая на кнопку 'в собственность', вы соглашаетесь с <a
+                    href="privacy-policy.html" target="_blank">Политикой
+                    конфиденциальности</a> и <a href="terms-of-use.html"
+                    target="_blank">Пользовательским соглашением</a>.
+            </label>
+        </div>
+
+        <footer
+            style="background-color: #e63a4f; color: white; padding: 20px 0; margin-top:20px; text-align: center;">
+            <div style="margin-bottom: 0px;">
+                <a href="https://t.me/distinqtive" target="_blank"
+                    style="margin: 0 10px; color: white; text-decoration: none; font-size: 18px;">ТЕЛЕГРАМ</a>
+                <a href="https://vkvideo.ru/video/@distinqtive" target="_blank"
+                    style="margin: 0 10px; color: white; text-decoration: none; font-size: 18px;">ВК</a>
+                <a href="https://youtube.com/@distinqtive?feature=shared"
+                    target="_blank"
+                    style="margin: 0 10px; color: white; text-decoration: none; font-size: 18px;">YOUTUBE</a>
+                <a href="https://yappy.media/n/distinqtive" target="_blank"
+                    style="margin: 0 10px; color: white; text-decoration: none; font-size: 18px;">YAPPY</a>
+                <a href="https://t.me/distinqtive_support" target="_blank"
+                    style="margin: 0 10px; color: white; text-decoration: none; font-size: 18px;">ОБРАТНАЯ
+                    СВЯЗЬ</a>
+
+            </div>
+
+            <div style="font-size: 14px; margin-top: 30px;">
+            </div>
+            <div style="font-size: 14px;margin-top: 10px;">
+                САЙТ ДИСТИНКТИВ: ВЕРСИЯ 1.0 ВСЕ ПРАВА ЗАЩИЩЕНЫ
+            </div>
+            <div style="font-size: 14px; margin-top: 10px; margin-bottom: 0px;">
+                ИНН: 614322971800 ШЕВЧЕНКО АНДРЕЙ ЕВГЕНЬЕВИЧ
+            </div>
+        </footer>
+
+        <script src="/scripts/jquery-3.7.1.min.js"></script>
+        <script src="/scripts/jquery.mask.min.js"></script>
+        <script src="/scripts/main.js"></script>
+        <script>
+        let slideIndex = 0;
+        const slides = document.querySelectorAll('.slider-images img');
+        const prevButton = document.querySelector('.prev');
+        const nextButton = document.querySelector('.next');
+
+        function moveSlide(direction) {
+            slideIndex += direction;
+
+            if (slideIndex >= slides.length) {
+                slideIndex = 0;
+            }
+
+            if (slideIndex < 0) {
+                slideIndex = slides.length - 1;
+            }
+
+            const offset = -slideIndex * 100;
+            document.querySelector('.slider-images').style.transform = `translateX(${offset}%)`;
+
+            updateButtons();
+        }
+
+        function updateButtons() {
+            // Скрываем или показываем кнопки в зависимости от текущего слайда
+            if (slideIndex === 0) {
+                prevButton.style.display = 'none'; // скрыть кнопку prev на первом слайде
+            } else {
+                prevButton.style.display = 'flex'; // показываем кнопку prev на всех остальных слайдах
+            }
+
+            if (slideIndex === slides.length - 1) {
+                nextButton.style.display = 'none'; // скрыть кнопку next на последнем слайде
+            } else {
+                nextButton.style.display = 'flex'; // показываем кнопку next на всех остальных слайдах
+            }
+        }
+
+        // Инициализация кнопок при загрузке страницы
+        updateButtons();
+        // Регулируемая задержка перед выпадением пунктов меню
+        let menuItemDelay = 0; // Задержка в миллисекундах
+
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const menuItems = document.querySelectorAll('.sidebar a');
+
+            if (sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+
+                // Убираем класс "show" с задержкой
+                menuItems.forEach((item) => {
+                    item.classList.remove('show');
+                });
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+
+                // Для первого пункта задержка 1 секунда
+                setTimeout(() => {
+                    menuItems[0].classList.add('show');
+
+                    // Для всех остальных пунктов задержка 0.1 секунда после первого
+                    menuItems.forEach((item, index) => {
+                        if (index !== 0) { // Пропускаем первый пункт
+                            setTimeout(() => {
+                                item.classList.add('show');
+                            }, 50 * index); // Задержка по 0.1 секунды для каждого последующего пункта
+                        }
+                    });
+                }, 100); // Задержка перед первым пунктом - 1 секунда
+            }
+        }
+
+
+        // Функция для обновления значения задержки через консоль или код
+        function setMenuItemDelay(delay) {
+            menuItemDelay = delay;
+        }
+
+        updateButtons();
+
+        document.querySelector('.toggle-description').addEventListener('click', function (e) {
+            e.preventDefault();
+            const description = document.querySelector('.description');
+            const toggleImg = document.querySelector('#toggleImg');
+
+            if (description.style.display === 'none' || description.style.display === '') {
+                description.style.display = 'block';
+                toggleImg.src = 'https://i.ibb.co/0VryhgtB/image.png'; // Меняем картинку на вторую
+            } else {
+                description.style.display = 'none';
+                toggleImg.src = 'https://i.ibb.co/1f48qKL1/image.png'; // Меняем картинку обратно на первую
+            }
+        });
+
+        document.querySelector('.triangle-button').addEventListener('click', function () {
+            this.classList.toggle('open');
+        });
+
+        document.addEventListener("DOMContentLoaded", function () {
+            const toggleButton = document.querySelector(".triangle-button1");
+            const description = document.querySelector(".description1");
+
+            toggleButton.addEventListener("click", function () {
+                if (description.style.display === "none" || description.style.display === "") {
+                    description.style.display = "block";
+                    toggleButton.classList.add("open");
+                } else {
+                    description.style.display = "none";
+                    toggleButton.classList.remove("open");
+                }
+            });
+        });
+
+
+    </script>
+
+    </body>
+</html>

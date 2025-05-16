@@ -1,0 +1,534 @@
+<!DOCTYPE html>
+<html lang="ru">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="description" content="Ж">
+        <meta name="theme-color" content="#000000"> <!-- Добавленный мета-тег -->
+        <title>История</title>
+        <style>
+         @font-face {
+    font-family: 'Distinqtive';
+    src: url('Distinqtive_Simple.ttf') format('truetype');
+    font-weight: normal;
+    font-style: none;
+}
+@font-face {
+        font-family: 'Eng_Distinqtive';
+        src: url('Eng_Distinqtive.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+* {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+
+body {
+    background: #000000; /* Цвет фона страницы */
+    color: white;
+    margin: 0;
+    padding: 0;
+}
+
+body, p, h1, h2, h3 {
+    font-family: 'Distinqtive', sans-serif !important;
+}
+header {
+            background-color: #000000;
+            color: #fff;
+            padding: 20px 0;
+            width: 100%;
+            height: 80px;
+            position: relative;
+            z-index: 10;
+            font-family: 'Eng_Distinqtive', sans-serif; /* Шрифт только в header */
+
+        }
+
+        header h1 {
+            font-size: 36px;}
+
+            .header-title {
+        font-size: 28px; /* Размер шрифта */
+        font-weight: bold;
+        color: #fff;
+        text-align: center;
+        flex-grow: 1;
+        margin-top: 7px;
+    }
+    header .menu-button {
+            position:absolute;
+            right: 20px;
+            background-color: #ffffff00;
+            color: #98303c00;
+            top: 50%;
+            transform: translateY(-50%); /* Сдвигаем на половину высоты кнопки */
+
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+            margin-top: 0px;
+        }
+        header .menu-button {
+    transition: transform 0.15s ease-out;
+}
+
+header .menu-button:active {
+    transform: translateY(-50%) scale(0.85); /* Чуть сильнее сжимается */
+}
+        header .menu-button:hover {
+            background-color: #d43f3a00;
+            color: #fff;
+        }
+    
+        .icon-button {
+            border: none;
+            background: none;
+            cursor: pointer;
+            padding: 0;
+        }
+        .icon-button img {
+            position:absolute;
+            left: 20px;
+
+            width: 40px; /* Укажите нужный размер иконки */
+            height: 40px; /* Укажите нужный размер иконки */
+        }
+        .sidebar {
+            width: 100%;
+            background-color: #ffffff00;
+            color: #54222200;
+            position: absolute;
+            top: 80px;
+            left: 0;
+            transform: translateY(-100%);
+            transition: transform 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            z-index: 9;
+            text-align: left;
+
+        }
+
+        .sidebar.open {
+            transform: translateY(0);
+        }
+
+        .sidebar a {
+
+            color: #ffffff; /* Цвет текста */
+            background-color: #000000;
+font-size: 20px;
+    position: relative; /* Чтобы позиционировать псевдоэлемент относительно пункта */
+    opacity: 0;
+    transform: translateY(-20px);
+    transition: opacity 1s, transform 0.1s;
+    text-decoration: none; /* Убираем подчеркивание */
+    line-height: 50px; /* Увеличиваем высоту строки */
+    padding-left: 25px;
+
+
+}
+
+.sidebar a.show {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+.sidebar a::after {
+    content: ""; /* Пустое содержимое для линии */
+    position: absolute;
+    right: 0;
+    top: 50%;
+    transform: translateY(-50%) rotate(135deg); /* Сместить по центру и наклонить */
+    width: 15px; /* Длина линии */
+    height: 2px; /* Толщина линии */
+    background-color: #e70d39; /* Цвет линии */
+    opacity: 0; /* Изначально скрыто */
+    transition: opacity 0.3s ease; /* Плавное появление */
+}
+        .overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            opacity: 0;
+            visibility: hidden;
+            transition: opacity 0.3s ease;
+            z-index: 8;
+        }
+
+        .overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }        
+
+    .fire_inside_text1 {
+        margin: 0;
+        color: #eb391e;
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 10px;
+    }
+
+    .fire_inside_text2 {
+        margin: 0;
+        color: #ffffff; /* Цвет текста описания */
+        font-size: 15px;
+        text-align: center;
+        flex: 1; /* Растягиваем текст по ширине */
+    }
+    .Ткань1 {
+        margin: 0;
+        color: #eb391e;
+        font-size: 20px;
+        text-align: center;
+        margin-bottom: 20px;
+    }
+
+    .Ткань2 {
+        margin: 0;
+        color: #ffffff; /* Цвет текста описания */
+        font-size: 15px;
+        text-align: center;
+        flex: 1; /* Растягиваем текст по ширине */
+        margin-bottom: 50px;
+    }
+
+    .description-container {
+    display: flex;
+    flex-direction: column; /* Располагаем элементы в колонку */
+    align-items: center; /* Центрируем элементы по горизонтали */
+    text-align: center; /* Выравниваем текст по центру */
+}
+.description {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding-left: 50px;
+    padding-right: 50px;
+    color: white;
+}
+
+.description-container img {
+    width: 100%; /* Подгоняем размер изображения */
+    height: auto;
+    margin-bottom: 20px;
+}
+
+    .divider-container {
+        position: relative; /* Для позиционирования наклонной линии */
+        width: 90%; /* Ширина контейнера */
+        margin: 20px auto; /* Центрирование и отступы */
+        margin-top: 50px;
+    }
+
+    .divider {
+        width: 100%; /* Ширина основной линии */
+        height: 2px; /* Высота основной линии */
+        background-color: #ccc; /* Цвет основной линии */
+        border: none;
+        margin: 0; /* Убираем дополнительные отступы */
+    }
+
+    .angled-line {
+        position: absolute; /* Позиционируем относительно родительского контейнера */
+        right: 0; /* Сдвигаем вправо */
+        top: 0; /* На одном уровне с основной линией */
+        width: 20px; /* Длина наклонной линии */
+        height: 2px;
+        margin-top: 2px; /* Толщина наклонной линии */
+        background-color: #ccc; /* Цвет наклонной линии */
+        transform: rotate(135deg); /* Поворот на 45 градусов */
+        transform-origin: top right; /* Начало поворота с правого верхнего угла */
+    }
+
+    .angled-line1 {
+        position: absolute; /* Позиционируем относительно родительского контейнера */
+        margin-left: 1.3px; /* Сдвигаем вправо */
+        width: 10px; /* Длина наклонной линии */
+        height: 2px;
+        margin-top: 1.5px; /* Толщина наклонной линии */
+        background-color: #ccc; /* Цвет наклонной линии */
+        transform: rotate(135deg); /* Поворот на 45 градусов */
+        transform-origin: top left; /* Начало поворота с правого верхнего угла */
+    }
+
+
+
+.first-description-container {
+    position: relative;
+    padding: 40px 0;
+    text-align: center;
+}
+
+    .first-description {
+        text-align: center; /* Выравнивание текста по центру */
+    }
+
+    @keyframes flame-glow {
+    0% {
+        filter: drop-shadow(0 0 10px rgba(216, 89, 53, 0.7)) drop-shadow(0 0 30px rgba(216, 89, 53, 0.5));
+    }
+    50% {
+        filter: drop-shadow(0 0 20px rgba(216, 89, 53, 0.9)) drop-shadow(0 0 40px rgba(216, 89, 53, 0.7));
+    }
+    100% {
+        filter: drop-shadow(0 0 10px rgba(216, 89, 53, 0.7)) drop-shadow(0 0 30px rgba(216, 89, 53, 0.5));
+    }
+}
+
+.first-description-container img {
+    width: 233px;
+    margin-bottom: 0px;
+    animation: flame-glow 2s infinite alternate;
+    filter: drop-shadow(0 0 10px rgba(216, 89, 53, 0.7)) drop-shadow(0 0 30px rgba(216, 89, 53, 0.5));
+    z-index: -100px;
+}
+
+.btn-container {
+            display: flex; /* Устанавливаем горизонтальное расположение кнопок */
+            align-items: center; /* Выравниваем кнопки по вертикали */
+            justify-content: center;
+            gap: 0px; /* Расстояние между кнопками */
+            margin-top: 0px;
+            margin-bottom: 0px;
+        }
+
+        .btn-wrapper-1 {
+            text-align: center;
+            position: relative; /* Для размещения псевдоэлементов */
+        }
+        .btn-wrapper-2 {
+            text-align: center;
+            position: relative; /* Для размещения псевдоэлементов */
+        }
+        .line-top-1, .line-top-2 {
+            width: 120%; /* Линия по ширине кнопки */
+            height: 2px; /* Толщина линии */
+            background-color: #eb391e; /* Цвет линии */
+            margin: 8px 0; /* Отступ сверху и снизу */
+            position: relative; /* Для псевдоэлементов */
+            margin-bottom: 3px;
+
+        }
+
+        .line-bottom-1, .line-bottom-2 {
+            width: 120%; /* Линия по ширине кнопки */
+            height: 2px; /* Толщина линии */
+            background-color: #eb391e; /* Цвет линии */
+            margin: 10px 0; /* Отступ сверху и снизу */
+            position: relative; /* Для псевдоэлементов */
+            margin-left: -25px;
+            margin-top: 6px;
+        }
+
+        .line-top-1::after, .line-top-2::after {
+            content: "";
+            position: absolute;
+            left: -59px; /* Расположение линии по горизонтали (слева от верхней линии) */
+            top: 24px; /* Расположение линии по вертикали */
+            width: 70px; /* Длина наклонной линии */
+            height: 2px; /* Толщина наклонной линии */
+            background-color: #eb391e; /* Цвет наклонной линии */
+            transform: rotate(135deg); /* Угол наклона */
+            transform-origin: center; /* Точка вращения */
+        }
+
+        .line-bottom-1::after, .line-bottom-2::after {
+            content: "";
+            position: absolute;
+            right: -59px; /* Расположение линии по горизонтали (справа от нижней линии) */
+            bottom: 24px; /* Расположение линии по вертикали */
+            width: 70px; /* Длина наклонной линии */
+            height: 2px; /* Толщина наклонной линии */
+            background-color: #eb391e; /* Цвет наклонной линии */
+            transform: rotate(-45deg); /* Угол наклона в противоположную сторону */
+            transform-origin: center; /* Точка вращения */
+        }
+
+        .btn-text-1, .btn-text-2 {
+            background: none;
+            border: none;
+            color: rgb(132, 132, 132);
+            font-size: 16px;
+            text-decoration: none;
+            cursor: pointer;
+            margin-top: 5px;
+            padding: 0;
+            margin-right: -5px;
+            font-family: 'Distinqtive', sans-serif; /* Применяем шрифт Distinqtive */
+
+
+        }
+
+        .btn-text-1:hover, .btn-text-2:hover {
+            color: #eb391e; /* Изменение цвета при наведении */
+        }
+
+</style>
+<header>
+    <a href="#" class="icon-button">
+        <img src="https://i.ibb.co/DHpSg79G/Logo-black.png" alt="Logo-black" border="0">
+    </a>
+    <div class="header-title">DISTINQTIVE</div>
+    <button class="menu-button" onclick="toggleMenu()">
+        <img src="https://i.ibb.co/WpJrm8B/Menu-button.png" alt="Menu" style="width: 25px; height: 25px;">
+    </button>
+</header>
+
+
+
+<div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+ <div class="sidebar" id="sidebar">
+        <a href="main_page.html">ГЛАВНАЯ</a>
+        <a href="t-shirt-buy.html">ФУТБОЛКА FIRE INSIDE</a>
+        <a href="index.html">ИСТОРИЯ ФУТБОЛКИ</a>
+
+    </div>
+</div>
+
+<div class="Ткань2">
+    
+    <p style="margin-bottom: 15px;"></p>
+
+    <p style="margin-bottom: 15px;"></p>
+    
+    <p style="margin-bottom: 15px;"></p>
+        
+    <p style="margin-bottom: 15px;">ОДНАЖДЫ ВЕЧЕРОМ Я ДЕЛАЛ АЙ-ТИ ПРОЕКТ</p>
+    
+    <p style="margin-bottom: 15px;">И ПОЧУВСТВОВАЛ, ЧТО ЧТО-ТО УПУСКАЮ,</p>
+
+    <p style="margin-bottom: 15px;">КАК БУДТО ЕСТЬ ЧТО-ТО ВАЖНОЕ,</p>
+
+    <p style="margin-bottom: 15px;">НО Я НЕ ПОНИМАЛ ЧТО.</p>
+
+    <img src="https://i.ibb.co/Gf3Z1VN9/IMG-2740009.png" alt="IMG-2740009"  width=380px>
+
+    <p style="margin-bottom: 15px; margin-top: 30px;">ПРИМЕРНО ЧЕРЕЗ ГОД</p>
+
+    <p style="margin-bottom: 15px;">Я ЗАМЕТИЛ ШКАТУЛКУ, КОТОРАЯ СТОЯЛА У МЕНЯ НА ПОЛОЧКЕ</p>
+
+    <p style="margin-bottom: 15px;">И ВДРУГ <span style="color: #eb391e;">ПОЧУВСТВОВАЛ</span> ЧТО-ТО ВНУТРИ И ПОДУМАЛ:</p>
+        
+    <p style="margin-bottom: 15px;">"THAT THING IS BEAUTIFUL"</p>
+
+    <img src="https://i.ibb.co/W4YHxtdL/IMG-2722iu.png" alt="IMG-2722iu" width=380px>
+
+    <p style="margin-bottom: 15px; margin-top: 30px;">ТОГДА Я ПОНЯЛ, ЧТО</p>
+
+    <p style="margin-bottom: 15px;">КОГДА Я ВОСХИЩАЮСЬ ТЕМ, ЧТО СОЗДАЛИ ДРУГИЕ,</p>
+
+    <p style="margin-bottom: 15px;">ИЛИ КОГДА Я СОЗДАЮ ТО, ЧТО ВЫЗЫВАЕТ ВОСХИЩЕНИЕ,</p>
+
+    <p style="margin-bottom: 15px;">Я <span style="color: #eb391e;">ЧУВСТВУЮ</span>
+    ВНУТРИ</p>
+
+    <p style="margin-bottom: 15px;">И ОЩУЩАЮ ЖИЗНЬ <span style="color: #eb391e;">ОСМЫСЛЕННОЙ</span>.</p>
+
+    <img src="https://i.ibb.co/WvVxXZwC/IMG-279999.png" alt="IMG-279999" width=265px>
+
+    <p style="margin-bottom: 15px; margin-top: 30px;">ПОЭТОМУ Я СОЗДАЛ СИМВОЛ,</p>
+
+    <p style="margin-bottom: 15px;">ОТРАЖАЮЩИЙ ЭТО ЧУВСТВО,</p>
+
+    <p style="margin-bottom: 15px;">КОТОРОЕ Я НАЗЫВАЮ <span style="color: #eb391e;">FIRE INSIDE</span>.</p>
+
+
+    <div class="first-description-container">
+        <img src="https://i.ibb.co/94gLQtD/2.png" alt="2">
+        <div class="first-description">
+            <div class="fire_inside_text1"></div>
+            <div class="fire_inside_text2"></div>
+    
+        </div>
+
+    </div>
+
+    <p style="margin-bottom: 15px;">ЧТОБЫ ВЫ СМОГЛИ <span style="color: #eb391e;">ПОЧУВСТВОВАТЬ ЭТО</span>.</p>
+
+    <p style="margin-bottom: 30px;">ТОЖЕ.</p>
+
+    <div class="btn-container">
+       
+                <div class="btn-wrapper-2">
+            <div class="line-top-2"></div> <a href="t-shirt-buy.html">
+
+            <button class="btn-text-2">В СОБСТВЕННОСТЬ</button>
+            <div class="line-bottom-2"></div>
+        </div>
+    </div>
+
+<div>
+    <div class="divider-container">
+    <div class="angled-line1"></div>
+    <hr class="divider">
+    <div class="angled-line"></div>
+</div>
+
+<footer style="background-color: #000000; color: white; padding: 0px 0; text-align: center;">
+    <div style="margin-bottom: 0px;">
+        <a href="https://t.me/distinqtive" target="_blank" style="margin: 0 10px; color: white; text-decoration: none; font-size: 18px;">ТЕЛЕГРАМ</a>
+        <a href="https://vkvideo.ru/video/@distinqtive" target="_blank" style="margin: 0 10px; color: white; text-decoration: none; font-size: 18px;">ВК</a>
+        <a href="https://youtube.com/@distinqtive?feature=shared" target="_blank" style="margin: 0 10px; color: white; text-decoration: none; font-size: 18px;">YOUTUBE</a>
+        <a href="https://yappy.media/n/distinqtive" target="_blank" style="margin: 0 10px; color: white; text-decoration: none; font-size: 18px;">YAPPY</a>
+                <a href="https://t.me/distinqtive_support" target="_blank" style="margin: 0 10px; color: white; text-decoration: none; font-size: 18px;">ОБРАТНАЯ СВЯЗЬ</a>
+
+    </div>
+    <div style="font-size: 14px;margin-top: 10px;">
+    </div>
+    <div style="font-size: 14px; margin-top: 10px; margin-bottom: 10px;">
+        </div>
+</footer>
+<script>           function toggleMenu() {
+       const sidebar = document.getElementById('sidebar');
+       const overlay = document.getElementById('overlay');
+       const menuItems = document.querySelectorAll('.sidebar a');
+   
+       if (sidebar.classList.contains('open')) {
+           sidebar.classList.remove('open');
+           overlay.classList.remove('active');
+   
+           menuItems.forEach((item) => {
+               item.classList.remove('show');
+           });
+       } else {
+           sidebar.classList.add('open');
+           overlay.classList.add('active');
+   
+           // Для первого пункта задержка 1 секунда
+           setTimeout(() => {
+               menuItems[0].classList.add('show');
+               
+               // Для всех остальных пунктов задержка 0.1 секунда после первого
+               menuItems.forEach((item, index) => {
+                   if (index !== 0) { // Пропускаем первый пункт
+                       setTimeout(() => {
+                           item.classList.add('show');
+                       }, 50 * index); // Задержка по 0.1 секунды для каждого последующего пункта
+                   }
+               });
+           }, 100); // Задержка перед первым пунктом - 1 секунда
+       }
+   }
+   
+           // Функция для обновления значения задержки через консоль или код
+           function setMenuItemDelay(delay) {
+               menuItemDelay = delay;
+           }
+       
+           updateButtons();
+       </script>
+
+           
+</body>
+</html>

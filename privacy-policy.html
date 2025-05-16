@@ -1,0 +1,344 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Юридические условия">
+    <title>Юридические условия</title>
+    <style>
+    @font-face {
+        font-family: 'Roboto';
+        src: url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;500&display=swap');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    body {
+        font-family: 'Roboto', sans-serif;
+        background-color: #f0f0f0;
+        color: #333;
+        line-height: 1.6;
+    }
+
+    /* Общие стили для текста */
+    .policy-text, .policy-title, .section-title, .footer-text, .footer-links a {
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .policy-text {
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 15px;
+        text-align: justify;
+    }
+
+    /* Стиль для заголовка */
+    .policy-title {
+        color: #e63a4f;
+        font-size: 24px;
+        margin-bottom: 20px;
+        text-align: center;
+        font-weight: 500;
+    }
+
+    /* Стиль для списка целей */
+    .policy-section ul {
+        margin-left: 20px;
+        margin-bottom: 15px;
+        list-style-type: disc;
+    }
+
+    .policy-section li {
+        font-size: 14px;
+        line-height: 1.6;
+        margin-bottom: 8px;
+    }
+    
+    @font-face {
+        font-family: 'Maragsâ';
+        src: url('Distinqtive_Simple.ttf') format('truetype');
+        font-weight: normal;
+        font-style: none;
+    }
+
+    @font-face {
+        font-family: 'Eng_Distinqtive';
+        src: url('Eng_Distinqtive.ttf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    header {
+        background-color: #e63a4f;
+        color: #fff;
+        padding: 20px 0;
+        width: 100%;
+        height: 80px;
+        position: relative;
+        z-index: 10;
+        font-family: 'Eng_Distinqtive', sans-serif;
+    }
+
+    .header-title {
+        font-size: 28px;
+        font-weight: bold;
+        color: #fff;
+        text-align: center;
+        flex-grow: 1;
+    }
+
+    header .menu-button {
+        position: absolute;
+        right: 20px;
+        top: 50%;
+        transform: translateY(-50%);
+        border: none;
+        background: none;
+        cursor: pointer;
+        padding: 0;
+    }
+
+    .icon-button img {
+        position: absolute;
+        left: 20px;
+        width: 40px;
+        height: 40px;
+    }
+
+    .sidebar {
+        width: 100%;
+        background-color: #ffffff;
+        position: absolute;
+        top: 80px;
+        left: 0;
+        transform: translateY(-100%);
+        transition: transform 0.3s ease;
+        display: flex;
+        flex-direction: column;
+        z-index: 9;
+        text-align: left;
+    }
+
+    .sidebar.open {
+        transform: translateY(0);
+    }
+
+    .sidebar a {
+        color: #e63a4f;
+        background-color: #ffffff;
+        font-size: 20px;
+        position: relative;
+        opacity: 0;
+        transform: translateY(-20px);
+        transition: opacity 1s, transform 0.1s;
+        text-decoration: none;
+        line-height: 50px;
+        padding-left: 25px;
+        font-family: 'Roboto', sans-serif;
+    }
+
+    .sidebar a.show {
+        opacity: 1;
+        transform: translateY(0);
+    }
+
+    .overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.5);
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s ease;
+        z-index: 8;
+    }
+
+    .overlay.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .main-content {
+        max-width: 800px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .policy-container {
+        background-color: white;
+        padding: 30px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .policy-section {
+        margin-bottom: 25px;
+    }
+
+    .policy-link {
+        color: #e63a4f;
+        text-decoration: none;
+        font-weight: bold;
+    }
+
+    .policy-link:hover {
+        text-decoration: underline;
+    }
+
+    footer {
+        background-color: #e63a4f;
+        color: white;
+        padding: 20px 0;
+        margin-top: 40px;
+        text-align: center;
+    }
+
+    .footer-links {
+        margin-bottom: 15px;
+    }
+
+    .footer-links a {
+        margin: 0 10px;
+        color: white;
+        text-decoration: none;
+        font-size: 18px;
+    }
+
+    .footer-text {
+        font-size: 14px;
+        margin-top: 10px;
+    }
+
+    @media (max-width: 768px) {
+        .main-content {
+            padding: 0 15px;
+        }
+        
+        .policy-container {
+            padding: 20px;
+        }
+        
+        .policy-title {
+            font-size: 20px;
+        }
+    }
+    </style>
+</head>
+<body>
+    <header>
+        <a href="https://ibb.co/W6rGy52" class="icon-button">
+            <img src="https://i.ibb.co/80yN5s7/jhg-2.png" alt="jhg-2">
+        </a>
+        <div class="header-title">DISTINQTIVE</div>
+
+        <button class="menu-button" onclick="toggleMenu()">
+            <img src="https://i.ibb.co/WpJrm8B/Menu-button.png" alt="Menu" style="width: 25px; height: 25px;">
+        </button>
+    </header>
+
+    <div class="overlay" id="overlay" onclick="toggleMenu()"></div>
+
+    <div class="sidebar" id="sidebar">
+        <a href="main_page.html">ГЛАВНАЯ</a>
+        <a href="index.html">ФУТБОЛКА FIRE INSIDE</a>
+        <a href="#"></a>
+    </div>
+
+    <div class="main-content">
+        <div class="policy-container">
+            <h1 class="policy-title">ЮРИДИЧЕСКИЕ УСЛОВИЯ</h1>
+            
+            <div class="policy-section">
+                <p class="policy-text">В соответствии с требованиями статьи 9 Федерального закона от 27.07.2006 г. № 152-ФЗ «О персональных данных», своей волей и в своем интересе выражаю согласие на обработку самозанятым Шевченко Андреем Евгеньевичем (далее – Оператор), зарегистрированным как владелец интернет-магазина <a href="https://distinqtive.art" target="_blank" class="policy-link">distinqtive.art</a>, следующих своих персональных данных: имя, пол, дата рождения, номер мобильного телефона, адрес электронной почты, а также иных персональных данных, предоставляемых мной при регистрации или оформлении заказа на сайте <a href="https://distinqtive.art" target="_blank" class="policy-link">distinqtive.art</a>.</p>
+            </div>
+            
+            <div class="policy-section">
+                <p class="policy-text">Настоящим я разрешаю Оператору и третьим лицам, действующим по поручению Оператора (при наличии соответствующих договоров или соглашений), обработку моих персональных данных, указанных при регистрации или использовании сайта <a href="https://distinqtive.art" target="_blank" class="policy-link">distinqtive.art</a>.</p>
+            </div>
+            
+            <div class="policy-section">
+                <p class="policy-text">Передача персональных данных осуществляется исключительно в целях:</p>
+                <ul>
+                    <li>предоставления информации о товарах и услугах, которые могут представлять для меня интерес;</li>
+                    <li>сбора и обработки статистической информации;</li>
+                    <li>проведения маркетинговых исследований, акций и рекламно-информационных рассылок посредством SMS-сообщений, электронной почты, почтовой связи, телефонной связи и иных средств коммуникации;</li>
+                    <li>формирования и использования базы данных.</li>
+                </ul>
+            </div>
+            
+            <div class="policy-section">
+                <p class="policy-text">Я предоставляю Оператору право осуществлять следующие действия с моими персональными данными: сбор, запись, систематизацию, накопление, хранение, уточнение, обновление, использование, обезличивание, блокирование, уничтожение, а также передачу персональных данных в объеме, предусмотренном действующим законодательством Российской Федерации. Обработка персональных данных может осуществляться как с использованием автоматизированных средств, так и без их применения.</p>
+            </div>
+            
+            <div class="policy-section">
+                <p class="policy-text">Актуальная информация о перечне лиц, осуществляющих обработку персональных данных по поручению Оператора, размещается на сайте <a href="https://distinqtive.art" target="_blank" class="policy-link">distinqtive.art</a>.</p>
+            </div>
+            
+            <div class="policy-section">
+                <p class="policy-text">Оператор вправе осуществлять смешанную (автоматизированную и неавтоматизированную) обработку моих персональных данных, включая внесение в электронные базы данных, использование в отчетных формах и иных документах, необходимых для выполнения обязательств перед Клиентом.</p>
+            </div>
+            
+            <div class="policy-section">
+                <p class="policy-text">Я оставляю за собой право отозвать свое согласие на обработку персональных данных путем направления письменного заявления по адресу электронной почты Оператора <a href="mailto:distinqtive.art@gmail.com" class="policy-link">distinqtive.art@gmail.com</a>, указанного на сайте <a href="https://distinqtive.art" target="_blank" class="policy-link">distinqtive.art</a>. Настоящее согласие считается отозванным с момента получения Оператором соответствующего заявления.</p>
+            </div>
+            
+            <div class="policy-section">
+                <p class="policy-text">Настоящие Юридические условия вступают в силу с момента моего согласия и действуют до момента отзыва согласия на обработку персональных данных.</p>
+                <p class="policy-text">Дата вступления в силу: 17 марта 2025 года.</p>
+            </div>
+        </div>
+    </div>
+
+    <footer>
+        <div class="footer-links">
+            <a href="https://t.me/distinqtive" target="_blank">ТЕЛЕГРАМ</a>
+            <a href="https://vk.com/distinqtive" target="_blank">ВК</a>
+            <a href="https://youtube.com/@distinqtive" target="_blank">YOUTUBE</a>
+            <a href="https://dzen.ru/distinqtive" target="_blank">ДЗЕН</a>
+        </div>
+        <div class="footer-text">ОБРАТНАЯ СВЯЗЬ: <a href="https://t.me/distinqtive_support" target="_blank" style="color: white; text-decoration: underline;">T.ME/DISTINQTIVE_SUPPORT</a></div>
+        <div class="footer-text">САЙТ ДИСТИНКТИВ: ВЕРСИЯ 1.0 ВСЕ ПРАВА ЗАЩИЩЕНЫ</div>
+        <div class="footer-text">ИНН: 614322971800 ШЕВЧЕНКО АНДРЕЙ ЕВГЕНЬЕВИЧ</div>
+    </footer>
+
+    <script>
+        function toggleMenu() {
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('overlay');
+            const menuItems = document.querySelectorAll('.sidebar a');
+
+            if (sidebar.classList.contains('open')) {
+                sidebar.classList.remove('open');
+                overlay.classList.remove('active');
+
+                menuItems.forEach((item) => {
+                    item.classList.remove('show');
+                });
+            } else {
+                sidebar.classList.add('open');
+                overlay.classList.add('active');
+
+                setTimeout(() => {
+                    menuItems[0].classList.add('show');
+                    
+                    menuItems.forEach((item, index) => {
+                        if (index !== 0) {
+                            setTimeout(() => {
+                                item.classList.add('show');
+                            }, 50 * index);
+                        }
+                    });
+                }, 100);
+            }
+        }
+    </script>
+</body>
+</html>
